@@ -65,8 +65,8 @@ internal class Program
         }
     }
 
-    static void replayGame()
-    {
+    static void replayGame() {
+
         while (true)
         {
             Console.WriteLine("Would you like to play again? (yes/no)");
