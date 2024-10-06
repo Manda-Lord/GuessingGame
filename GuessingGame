@@ -1,93 +1,92 @@
-namespace COMP101_HelloWorld
+using System.Net;
+
+internal class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main()
+        guessingGame();
+        replayGame();
+    }
+
+    static void guessingGame() {
+
+        Random random = new Random();
+        int targetNumber = random.Next(1, 101);
+
+        string? playerGuess;
+        int parsedGuess;
+        int playerLives = 5;
+
+        // bool userInputValid = false;
+        bool isNumeric = false;
+
+        Console.WriteLine("Choose a number between 1 and 100.");
+
+        playerGuess = Console.ReadLine();
+
+        while (playerLives > 0)
         {
-            guessingGame();
-            replayGame();
-        }
-        #nullable enable
-        static void guessingGame()
-        {
-            Random random = new Random();
+            if (string.IsNullOrEmpty(playerGuess)) {
+                Console.WriteLine("Cannot be left blank. Please try again.");
+                playerGuess = Console.ReadLine();
+                continue;
+            }
+            
+            // Check if input is a valid number
+            isNumeric = int.TryParse(playerGuess, out parsedGuess);
 
-            int minNum = 1, maxNum = 100;
-            int targetNumber = random.Next(minNum, maxNum); // or = new Random().Next(minNum)
-            int parsedGuess = 0;
-
-            bool isNumeric = false;
-
-            Console.WriteLine("Guess a number between 1 and 100");
-            string? playerGuess = Console.ReadLine();
-
-            while (true)
-            {
-                if (string.IsNullOrWhiteSpace(playerGuess))
-                {
-                    Console.WriteLine("Cannot be left blank. Please try again.");
-                    continue;
-                }
-
-                // Check if input is a valid number
-                isNumeric = int.TryParse(playerGuess, out parsedGuess);
-                
-                if (!isNumeric)
-                {
-                    Console.WriteLine($"Sorry, {playerGuess} is a non-numeric value. Please try again");
-                    continue;
-                }
-                if (parsedGuess < 1 || parsedGuess > 100)
-                {
-                    Console.WriteLine("Please input a number between 1 and 100");
-                    continue;
-                }
-
-                if (isNumeric && parsedGuess < targetNumber)
-                {
-                    Console.WriteLine("Your number is too low!\nGuess again:");
-                    playerGuess = Console.ReadLine();
-                }
-                else if (isNumeric && parsedGuess > targetNumber)
-                {
-                    Console.WriteLine("Your number is too high!\nGuess again:");
-                    playerGuess = Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine("You guessed correctly! You win.");
-                    break; // Exit loop if correct number is guessed
-                }
+            if (!isNumeric) {
+                Console.WriteLine($"Sorry, {playerGuess} is a non-numeric value. Please try again.");
+                playerGuess = Console.ReadLine();
+                continue;
+            }
+            if (parsedGuess < 1 || parsedGuess > 100) {
+                Console.WriteLine("Please input a number between 1 and 100.");
+                playerGuess = Console.ReadLine();
+                continue;
+            }
+            if (isNumeric && parsedGuess < targetNumber && playerLives > 0) {
+                Console.WriteLine("Your number is too low!\nGuess again:");
+                playerLives -= 1;
+                playerGuess = Console.ReadLine();
+            }
+            if (isNumeric && parsedGuess > targetNumber && playerLives > 0) {
+                Console.WriteLine("Your number is too high!\nGuess again:");
+                playerLives -= 1;
+                playerGuess = Console.ReadLine();
+            }
+            if (parsedGuess == targetNumber) {
+                Console.WriteLine("You guessed correctly! You win.");
+                break;
+            }
+            else if (playerLives == 1) {
+                Console.WriteLine("Sorry, you lose.");
+                break;
             }
         }
-        static void replayGame()
-        {
-            while (true)
-            {
-                Console.WriteLine("Would you like to play again? (yes/no)");
-                string? userInput = Console.ReadLine()?.Trim().ToLower();
+    }
 
-                if (string.IsNullOrWhiteSpace(userInput))
-                {
-                    Console.WriteLine("Cannot be left blank");
-                    continue;
-                }
-                if (userInput == "yes")
-                {
-                    guessingGame();
-                }
-                else if (userInput == "no")
-                {
-                    Console.WriteLine("Thank you for playing.");
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input. Please type 'yes' or 'no'.");
-                }
+    static void replayGame()
+    {
+        while (true)
+        {
+            Console.WriteLine("Would you like to play again? (yes/no)");
+            string? userInput = Console.ReadLine()?.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(userInput)) {
+                Console.WriteLine("Cannot be left blank");
+                continue;
+            }
+            if (userInput == "yes") {
+                guessingGame();
+            }
+            else if (userInput == "no") {
+                Console.WriteLine("Thank you for playing.");
+                break;
+            }
+            else {
+                Console.WriteLine("Invalid input. Please type 'yes' or 'no'.");
             }
         }
     }
 }
-
-#nullable disable
