@@ -17,7 +17,6 @@ internal class Program
         int parsedGuess;
         int playerLives = 5;
 
-        // bool userInputValid = false;
         bool isNumeric = false;
 
         Console.WriteLine("Choose a number between 1 and 100.");
